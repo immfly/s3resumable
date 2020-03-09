@@ -13,10 +13,9 @@
 # language governing permissions and limitations under the License.
 """Download S3 in parts.
 
-This modules provides observer classe for S3Resumable.
+This modules provides observer class for S3Resumable.
 """
-from abc import ABC
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 
 __all__ = ["S3ResumableObserver"]
 

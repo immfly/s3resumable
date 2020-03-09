@@ -21,15 +21,13 @@ import math
 import os
 
 import filelock
-from botocore.exceptions import ClientError
 from botocore.compat import six
+from botocore.exceptions import ClientError
 
-from s3resumable.utils import create_directory_tree
-from s3resumable.utils import get_filelock_path
-from s3resumable.exceptions import S3ResumableIncompatible
+from s3resumable.exceptions import (S3ResumableBloqued, S3ResumableDownloadError,
+                                    S3ResumableIncompatible)
 from s3resumable.observer import S3ResumableObserver
-from s3resumable.exceptions import S3ResumableDownloadError
-from s3resumable.exceptions import S3ResumableBloqued
+from s3resumable.utils import create_directory_tree, get_filelock_path
 
 __all__ = ["S3Resumable"]
 

@@ -23,9 +23,7 @@ import sys
 
 import boto3
 
-from s3resumable import S3Resumable
-from s3resumable import S3ResumableObserver
-
+from s3resumable import S3Resumable, S3ResumableObserver
 
 S3_URL = r"^s3://([^/]+)/(.*?([^/]+)/?)$"
 
