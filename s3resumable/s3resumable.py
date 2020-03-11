@@ -114,7 +114,8 @@ class S3Resumable:
         if content_length != 0 and "bytes" in accept_ranges:
             total_parts = math.ceil(content_length / self._part_size_bytes)
         else:
-            raise S3ResumableIncompatible()
+            raise S3ResumableIncompatible("Can't download key {} from {} bucket".format(
+                key, bucket))
 
         return {"key": key,
                 "content_length": content_length,
@@ -136,14 +137,16 @@ class S3Resumable:
             response = self._client.get_object(Bucket=bucket, Key=key, Range=part_range)
         except ClientError as client_error:
             if client_error.response['Error']['Code'] == '404':
-                raise S3ResumableDownloadError("Key {} does not exist in s3".format(key))
+                raise S3ResumableDownloadError("Key {} does not exist in {} bucket".format(
+                    key, bucket))
         body = response.get('Body')
         if body is not None:
             with open(file_part, "wb") as part_buffer:
                 part_buffer.write(body.read())
 
         if not self._check_part_size(file_part, part, file_info):
-            raise S3ResumableDownloadError("Error with part...")
+            raise S3ResumableDownloadError("Failed to download part {} of key {}".format(
+                file_part, key))
 
         file_info.update({"part": part + 1})
         self.notify(file_info)
@@ -177,7 +180,7 @@ class S3Resumable:
         # Check file size
         if os.path.getsize(local_file_path) != content_length:
             os.remove(local_file_path)
-            raise S3ResumableDownloadError("key %s fail to download" % key)
+            raise S3ResumableDownloadError("Failed to download key {}".format(key))
 
         return local_file_path
 
@@ -220,7 +223,7 @@ class S3Resumable:
                 if downloaded_file is not None and downloaded_file != local_file_path:
                     os.rename(downloaded_file, local_file_path)
         except filelock.Timeout:
-            raise S3ResumableBloqued("Another instance is currently downloading {}.".format(
+            raise S3ResumableBloqued("Another instance is currently downloading {}".format(
                 local_file_path))
 
         return local_file_path

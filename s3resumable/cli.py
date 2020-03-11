@@ -23,7 +23,7 @@ import sys
 
 import boto3
 
-from s3resumable import S3Resumable, S3ResumableObserver
+from s3resumable import S3Resumable, S3ResumableObserver, S3ResumableError
 
 S3_URL = r"^s3://([^/]+)/(.*?([^/]+)/?)$"
 
@@ -85,10 +85,13 @@ class Cli(S3ResumableObserver):
         self.logger.debug("download_file: %s", download_file or os.path.basename(key))
         self.logger.debug("temp_dir: %s", args.temp_dir or download_dir)
 
-        downloaded_file = s3resumable.download_file(bucket, key, download_dir,
-                                                    download_file=download_file,
-                                                    temp_dir=args.temp_dir)
-        self.logger.info("%s downloaded", downloaded_file)
+        try:
+            downloaded_file = s3resumable.download_file(bucket, key, download_dir,
+                                                        download_file=download_file,
+                                                        temp_dir=args.temp_dir)
+            self.logger.info("%s downloaded", downloaded_file)
+        except S3ResumableError as err:
+            self.logger.error(str(err))
 
 
 def main():
