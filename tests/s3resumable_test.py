@@ -28,7 +28,5 @@ class S3ResumableTests(unittest.TestCase):
         s3r = S3Resumable(None)
         self.assertRaises(TypeError, s3r.attach(object))
 
-    def
-
 if __name__ == '__main__':
     unittest.main()
