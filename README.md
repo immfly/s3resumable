@@ -32,6 +32,15 @@ s3resumable = S3Resumable(s3client)
 s3resumable.download_file('my_bucket', 'my_key', 'my_download_dir')
 ```
 
+This will download the file in parts (15mb by default) and once downloaded
+all the parts will join them in one file.
+
+A CLI can also be used. Check the help:
+
+```bash
+s3resumable --help
+```
+
 ## QA
 
 In order to check QA, you can use docker-compose:
