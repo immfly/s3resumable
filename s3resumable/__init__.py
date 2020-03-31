@@ -17,6 +17,8 @@ This modules provides a helper class to download files from S3 using boto3.
 To be able to recover incomplete downloads, it downloads files in parts of
 the configured size.
 """
+from __future__ import absolute_import
+
 from .exceptions import (S3ResumableBloqued, S3ResumableDownloadError, S3ResumableError,
                          S3ResumableIncompatible)
 from .observer import S3ResumableObserver

@@ -1,0 +1,24 @@
+version: '3'
+services:
+  py37:
+    build:
+      dockerfile: docker-utils/s3resumable/Dockerfile
+      context: .
+      args:
+        uid: ${uid:-1000}
+        gid: ${gid:-1000}
+        PYTHONVERSION: 3.7.7
+        PYTHONBIN: python3
+    volumes:
+      - ./:/app
+  py27:
+    build:
+      dockerfile: docker-utils/s3resumable/Dockerfile
+      context: .
+      args:
+        uid: ${uid:-1000}
+        gid: ${gid:-1000}
+        PYTHONVERSION: 2.7.17
+        PYTHONBIN: python
+    volumes:
+      - ./:/app

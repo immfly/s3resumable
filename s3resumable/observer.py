@@ -15,14 +15,16 @@
 
 This modules provides observer class for S3Resumable.
 """
-from abc import ABC, abstractmethod
+import abc
+import six
 
 __all__ = ["S3ResumableObserver"]
 
 
-class S3ResumableObserver(ABC):  # pylint: disable=too-few-public-methods
+@six.add_metaclass(abc.ABCMeta)
+class S3ResumableObserver():  # pylint: disable=too-few-public-methods
     """Observer interface declares the update method, used by S3Resumable."""
 
-    @abstractmethod
+    @abc.abstractmethod
     def update(self, file_info):
         """Receive update from S3Resumable."""

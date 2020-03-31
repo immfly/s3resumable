@@ -1,0 +1,11 @@
+language: python
+python:
+  - "2.7.7"
+  - "3.7.17"
+install:
+  - pip install pipenv
+  - pipenv install -e .[dev]
+script:
+  - pipenv run pylint s3resumable
+  - pipenv run coverage run --source=s3resumable -m pytest
+  - pipenv run coverage report -m 

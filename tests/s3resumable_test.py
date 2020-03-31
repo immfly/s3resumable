@@ -11,8 +11,10 @@
 # distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
+from __future__ import absolute_import
+
 import unittest
-import mock
+from mock import patch
 
 from s3resumable import S3Resumable
 
@@ -26,7 +28,12 @@ class S3ResumableTests(unittest.TestCase):
 
     def test_attach_observer(self):
         s3r = S3Resumable(None)
-        self.assertRaises(TypeError, s3r.attach(object))
+        with self.assertRaises(TypeError):
+            s3r.attach(object)
+        
+    #@patch.object
+    #def test_mock(self):
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -17,6 +17,8 @@ This modules provides a helper class to download files from S3 using boto3.
 To be able to recover incomplete downloads, it downloads files in parts of
 the configured size.
 """
+from __future__ import absolute_import
+
 import math
 import os
 
@@ -24,10 +26,10 @@ import filelock
 from botocore.compat import six
 from botocore.exceptions import ClientError
 
-from s3resumable.exceptions import (S3ResumableBloqued, S3ResumableDownloadError,
-                                    S3ResumableIncompatible)
-from s3resumable.observer import S3ResumableObserver
-from s3resumable.utils import create_directory_tree, get_filelock_path
+from .exceptions import (S3ResumableBloqued, S3ResumableDownloadError,
+                         S3ResumableIncompatible)
+from .observer import S3ResumableObserver
+from .utils import create_directory_tree, get_filelock_path
 
 __all__ = ["S3Resumable"]
 

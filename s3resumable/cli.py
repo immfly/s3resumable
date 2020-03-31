@@ -15,6 +15,8 @@
 
 Command line interface for S3resumable.
 """
+from __future__ import absolute_import
+
 import argparse
 import logging
 import os

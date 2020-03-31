@@ -31,13 +31,16 @@ setuptools.setup(
         'console_scripts': ['s3resumable=s3resumable.cli:main'],
     },
     install_requires=[
+        'six',
         'boto3',
         'filelock==3.0.12'],
     extras_require={
         'dev': [
             'pylint',
             'flake8',
-            'pytest'
+            'pytest',
+            'mock',
+            'coverage'
         ]
     },
     classifiers=[
