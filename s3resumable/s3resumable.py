@@ -114,7 +114,7 @@ class S3Resumable:
         # Calculate total parts
         total_parts = 0
         if content_length != 0 and "bytes" in accept_ranges:
-            total_parts = math.ceil(content_length / self._part_size_bytes)
+            total_parts = int(math.ceil(float(content_length) / float(self._part_size_bytes)))
         else:
             raise S3ResumableIncompatible("Can't download key {} from {} bucket".format(
                 key, bucket))
