@@ -4,7 +4,7 @@ This modules provides a helper class to download files from S3 using boto3.
 To be able to recover incomplete downloads, it downloads files in parts of
 the configured size.
 
-# Installation
+## Installation
 
 Using `pip`:
 
@@ -18,7 +18,21 @@ Using `docker-compose`:
 docker-compose build
 ```
 
-# QA
+## Usage
+
+The basic usage of s3resumable module can be summarized as declare a `boto3`
+client and pass it on `S3Resumable` class:
+ 
+```python
+import boto3
+from s3resumable import S3Resumable 
+
+s3client = boto3.client('s3')
+s3resumable = S3Resumable(s3client)
+s3resumable.download_file('my_bucket', 'my_key', 'my_download_dir')
+```
+
+## QA
 
 In order to check QA, you can use docker-compose:
 
