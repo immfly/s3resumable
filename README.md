@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/immfly/s3resumable.svg?branch=master)](https://travis-ci.org/immfly/s3resumable)]
+[![Build Status](https://travis-ci.org/immfly/s3resumable.svg?branch=master)](https://travis-ci.org/immfly/s3resumable)
 
 # S3Resumable
 
