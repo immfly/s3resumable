@@ -23,7 +23,7 @@ import tempfile
 
 def create_directory_tree(path):
     """Create directory tree."""
-    if not os.path.exists(path) and not os.path.isdir(path):
+    if not os.path.exists(path):
         try:
             os.makedirs(path)
         except OSError as exc:  # Python >2.5

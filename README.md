@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/immfly/s3resumable.svg?branch=master)](https://travis-ci.org/immfly/s3resumable)]
+
 # S3Resumable
 
 This modules provides a helper class to download files from S3 using boto3.

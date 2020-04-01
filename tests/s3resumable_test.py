@@ -19,7 +19,15 @@ from mock import MagicMock
 
 from s3resumable import S3Resumable
 from s3resumable import S3ResumableIncompatible
-from .utils import ObserverTest
+from s3resumable import S3ResumableObserver
+
+
+class ObserverTest(S3ResumableObserver):
+    def __init__(self):
+        self.file_info = None
+
+    def update(self, file_info):
+        self.file_info = file_info
 
 
 class S3ResumableTests(unittest.TestCase):
@@ -107,6 +115,25 @@ class S3ResumableTests(unittest.TestCase):
         }
         with self.assertRaises(S3ResumableIncompatible):
             s3r.get_file_info("my_bucket", "my_key")
+
+    """
+    @patch('s3resumable.s3resumable.os')
+    def test_download_part(self, mock_os):
+        boto3 = MagicMock()
+        mock_os.path.isfile.return_value = True
+        mock_os.path.getsize.return_value = 10
+        boto3.head_object.return_value = {
+            "ResponseMetadata": {
+                "HTTPHeaders": {
+                    "content-length": "124",
+                    "accept-ranges": "bytes"
+                }
+            }
+        }
+        boto3.get_object.return_value = {
+
+        }
+    """
 
 if __name__ == '__main__':
     unittest.main()

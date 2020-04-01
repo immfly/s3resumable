@@ -14,8 +14,10 @@
 from __future__ import absolute_import
 
 from .s3resumable_test import S3ResumableTests
+from .utils_test import UtilsTests
 
 
 __all__ = [
-    "S3ResumableTests"
+    "S3ResumableTests",
+    "UtilsTests"
 ]
