@@ -20,6 +20,9 @@ from mock import MagicMock
 from s3resumable import S3Resumable
 from s3resumable import S3ResumableIncompatible
 from s3resumable import S3ResumableObserver
+from s3resumable import S3ResumableDownloadError
+
+from botocore.exceptions import ClientError
 
 
 class ObserverTest(S3ResumableObserver):
@@ -116,24 +119,32 @@ class S3ResumableTests(unittest.TestCase):
         with self.assertRaises(S3ResumableIncompatible):
             s3r.get_file_info("my_bucket", "my_key")
 
-    """
+
     @patch('s3resumable.s3resumable.os')
     def test_download_part(self, mock_os):
         boto3 = MagicMock()
-        mock_os.path.isfile.return_value = True
-        mock_os.path.getsize.return_value = 10
-        boto3.head_object.return_value = {
-            "ResponseMetadata": {
-                "HTTPHeaders": {
-                    "content-length": "124",
-                    "accept-ranges": "bytes"
-                }
-            }
+        s3r = S3Resumable(boto3)
+        s3r._check_part_size = MagicMock()
+        s3r.notify = MagicMock()
+        file_info = {
+            'part_path': '/tmp/test.part{{part}}',
+            'content_length': 100000
         }
-        boto3.get_object.return_value = {
+        s3r._download_part("my_bucket", "my_key", 1, file_info)
+        s3r._check_part_size.return_value = False
+        boto3.get_object.side_effect = ClientError({'Error': {'Code': '404'}}, '')
+        with self.assertRaises(S3ResumableDownloadError):
+            s3r._download_part("my_bucket", "my_key", 1, file_info)
+        boto3.get_object.side_effect = None
+        body_mock = MagicMock()
+        boto3.get_object.return_value = {'Body': body_mock}
+        body_mock.read.return_value = b'1233455666'
+        with self.assertRaises(S3ResumableDownloadError):
+            s3r._download_part("my_bucket", "my_key", 1, file_info)
+        s3r._check_part_size.side_effect = [False, True]
+        s3r._download_part("my_bucket", "my_key", 1, file_info)
+        self.assertEqual(file_info['part'], 2)
 
-        }
-    """
 
 if __name__ == '__main__':
     unittest.main()

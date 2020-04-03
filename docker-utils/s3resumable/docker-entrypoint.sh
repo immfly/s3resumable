@@ -6,6 +6,7 @@ launch_s3resumable() {
 }
 
 launch_qa() {
+  pipenv run flake8 --max-line-length=100 .
   pipenv run pylint s3resumable
   pipenv run coverage run --source=s3resumable -m pytest
   pipenv run coverage report -m 
