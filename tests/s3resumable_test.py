@@ -13,16 +13,23 @@
 # language governing permissions and limitations under the License.
 from __future__ import absolute_import
 
+import sys
+
 import unittest
 from mock import patch
 from mock import MagicMock
+from mock import mock_open
 
 from s3resumable import S3Resumable
 from s3resumable import S3ResumableIncompatible
 from s3resumable import S3ResumableObserver
 from s3resumable import S3ResumableDownloadError
+from s3resumable import S3ResumableBloqued
 
 from botocore.exceptions import ClientError
+from filelock import Timeout
+
+BUILTIN_OPEN = '__builtin__.open' if sys.version_info.major < 3 else 'builtins.open'
 
 
 class ObserverTest(S3ResumableObserver):
@@ -119,9 +126,7 @@ class S3ResumableTests(unittest.TestCase):
         with self.assertRaises(S3ResumableIncompatible):
             s3r.get_file_info("my_bucket", "my_key")
 
-
-    @patch('s3resumable.s3resumable.os')
-    def test_download_part(self, mock_os):
+    def test_download_part(self):
         boto3 = MagicMock()
         s3r = S3Resumable(boto3)
         s3r._check_part_size = MagicMock()
@@ -144,6 +149,37 @@ class S3ResumableTests(unittest.TestCase):
         s3r._check_part_size.side_effect = [False, True]
         s3r._download_part("my_bucket", "my_key", 1, file_info)
         self.assertEqual(file_info['part'], 2)
+
+    @patch(BUILTIN_OPEN, new_callable=mock_open, read_data="se")
+    @patch('s3resumable.s3resumable.os')
+    def test_download_parts(self, mock_os, m_open):
+        s3r = S3Resumable(None)
+        s3r.get_file_info = MagicMock()
+        s3r._download_part = MagicMock()
+        s3r.get_file_info.return_value = {
+            "total_parts": 2,
+            "content_length": 10
+        }
+        mock_os.path.getsize.return_value = 9
+        with self.assertRaises(S3ResumableDownloadError):
+            s3r._download_parts("my_bucket", "my_key", "/tmp/download_file", "/tmp")
+        mock_os.path.getsize.return_value = 10
+        s3r._download_parts("my_bucket", "my_key", "/tmp/download_file", "/tmp")
+
+    @patch('s3resumable.s3resumable.filelock')
+    @patch('s3resumable.s3resumable.get_filelock_path')
+    @patch('s3resumable.s3resumable.create_directory_tree')
+    @patch('s3resumable.s3resumable.os')
+    def test_download_file(self, mock_os, mock_dt, mock_fp, mock_filelock):
+        s3r = S3Resumable(None)
+        with self.assertRaises(ValueError):
+            s3r.download_file(9, 1, 2)
+            s3r.download_file("my_bucket", 1, 2)
+            s3r.download_file("my_bucket", "my_key", 2)
+        s3r._download_parts = MagicMock()
+        s3r.download_file("my_bucket", "my_key", "/tmp")
+        mock_os.path.isfile.return_value = False
+        s3r.download_file("my_bucket", "my_key", "/tmp")
 
 
 if __name__ == '__main__':
