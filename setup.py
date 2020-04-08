@@ -40,7 +40,8 @@ setuptools.setup(
             'flake8',
             'pytest',
             'mock',
-            'coverage'
+            'coverage',
+            'unittest2 ; python_version<"3"'
         ]
     },
     classifiers=[

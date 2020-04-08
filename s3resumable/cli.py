@@ -21,7 +21,6 @@ import argparse
 import logging
 import os
 import re
-import sys
 
 import boto3
 
@@ -69,7 +68,7 @@ class Cli(S3ResumableObserver):
         s3_url_re = re.match(S3_URL, args.source[0])
         if not s3_url_re:
             self.logger.error("invalid argument for s3 url")
-            sys.exit(-1)
+            return -1
 
         bucket = s3_url_re.group(1)
         key = s3_url_re.group(2)
@@ -94,6 +93,7 @@ class Cli(S3ResumableObserver):
             self.logger.info("%s downloaded", downloaded_file)
         except S3ResumableError as err:
             self.logger.error(str(err))
+        return 0
 
 
 def main():
