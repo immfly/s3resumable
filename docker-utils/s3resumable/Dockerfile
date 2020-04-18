@@ -6,6 +6,7 @@ ARG uid=1000
 ARG gid=1000
 ARG PYTHONBIN
 ENV PYTHONBIN=${PYTHONBIN:-python3}
+ENV SHELL=/bin/bash
 
 # Install system dependencies
 RUN apk --update add --no-cache gcc bash $PYTHONBIN-dev build-base \

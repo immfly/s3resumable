@@ -21,11 +21,11 @@ setuptools.setup(
     name="s3resumable",
     version="0.0.1",
     author="Immfly",
-    author_email="francesc.gordillo@immfly.com",
+    author_email="infra-team+pypi@immfly.com",
     description="Resumable S3 download",
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
-    url="https://git.immfly.com/immfly/s3resumable",
+    url="https://github.com/immfly/s3resumable",
     packages=['s3resumable'],
     entry_points={
         'console_scripts': ['s3resumable=s3resumable.cli:main'],

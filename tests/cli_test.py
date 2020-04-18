@@ -64,5 +64,6 @@ class CliTests(unittest.TestCase):
             cli.start()
         self.assertIn('downloaded', cm.output[0])
 
+
 if __name__ == '__main__':
     unittest.main()
