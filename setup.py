@@ -19,7 +19,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="s3resumable",
-    version="0.0.2",
+    version="0.0.3",
     author="Immfly",
     author_email="infra-team+pypi@immfly.com",
     description="Resumable S3 download",

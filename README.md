@@ -11,7 +11,7 @@ the configured size.
 Using `pip`:
 
 ```bash
-pip install .
+pip install s3resumable
 ```
 
 Using `docker-compose`:
