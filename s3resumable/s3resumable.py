@@ -109,10 +109,9 @@ class S3Resumable:
             http_headers = metadata.get('HTTPHeaders')
         if http_headers is not None:
             content_length = int(http_headers.get('content-length', 0))
-            accept_ranges = http_headers.get('accept-ranges')
+            accept_ranges = http_headers.get('accept-ranges', 'none')
 
         # Calculate total parts
-        total_parts = 0
         if content_length != 0 and "bytes" in accept_ranges:
             total_parts = int(math.ceil(float(content_length) / float(self._part_size_bytes)))
         else:
