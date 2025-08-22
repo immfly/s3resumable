@@ -49,6 +49,5 @@ In order to check QA, you can use docker-compose:
 
 ```bash
 docker-compose build
-docker-compose run py27 qa
 docker-compose run py37 qa
 ```

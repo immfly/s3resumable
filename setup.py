@@ -19,7 +19,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="s3resumable",
-    version="0.0.3",
+    version="0.0.4",
     author="Immfly",
     author_email="infra-team+pypi@immfly.com",
     description="Resumable S3 download",
@@ -41,18 +41,21 @@ setuptools.setup(
             'pytest',
             'mock',
             'coverage',
-            'unittest2 ; python_version<"3"'
+            'unittest2'
         ]
     },
     classifiers=[
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3::Only",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
         "Topic :: Internet",
         "Topic :: Software Development :: Libraries",
         "Operating System :: OS Independent",
         "License :: OSI Approved :: Apache Software License"
     ],
-    python_requires='>=2.6',
+    python_requires='>=3.9',
 )
