@@ -8,4 +8,3 @@ pylint = "*"
 
 [packages]
 s3resumable = {editable = true,path = "."}
-urllib3 = "==2.5.0"
